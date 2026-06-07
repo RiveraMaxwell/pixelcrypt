@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelCrypt - Online Image Encryption</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        <h1>🔐 PixelCrypt <span class="badge">Web</span></h1>
+        <p class="privacy-note">🛡️ Everything runs locally — your images never leave your device.</p>
+    </header>
+
+    <!-- Main App -->
+    <main class="app-container">
+        <!-- Controls Panel -->
+        <div class="controls-panel">
+            <!-- File Input -->
+            <div class="control-group">
+                <label>Image</label>
+                <div class="drop-zone" id="dropZone">
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                    <p>Drop image here or <button class="link-btn" id="browseBtn">browse</button></p>
+                    <span class="file-info" id="fileInfo"></span>
+                </div>
+            </div>
+
+            <!-- Key Input -->
+            <div class="control-group">
+                <label>Encryption Key</label>
+                <div class="key-input-wrap">
+                    <input type="password" id="keyInput" placeholder="Enter your secret key" autocomplete="off">
+                    <button class="icon-btn" id="toggleKey" title="Show/hide key">👁</button>
+                </div>
+                <div class="strength-bar-wrap">
+                    <div class="strength-bar" id="strengthBar"></div>
+                </div>
+                <span class="strength-label" id="strengthLabel"></span>
+            </div>
+
+            <!-- Actions -->
+            <div class="control-group actions">
+                <button class="btn btn-encrypt" id="encryptBtn" disabled>🔒 Encrypt</button>
+                <button class="btn btn-decrypt" id="decryptBtn" disabled>🔓 Decrypt</button>
+            </div>
+
+            <!-- Download -->
+            <div class="control-group" id="downloadGroup" style="display:none;">
+                <button class="btn btn-download" id="downloadBtn">💾 Download Result</button>
+                <button class="btn btn-verify" id="verifyBtn">✓ Verify Round-Trip</button>
+            </div>
+
+            <!-- Status -->
+            <div class="status" id="status"></div>
+        </div>
+
+        <!-- Preview Panel -->
+        <div class="preview-panel">
+            <div class="preview-tabs">
+                <button class="tab active" data-view="result">Result</button>
+                <button class="tab" data-view="original">Original</button>
+                <button class="tab" data-view="side-by-side">Side by Side</button>
+            </div>
+            <div class="preview-area" id="previewArea">
+                <p class="placeholder-text">Load an image to get started</p>
+                <canvas id="canvasOriginal" hidden></canvas>
+                <canvas id="canvasResult" hidden></canvas>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

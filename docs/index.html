@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelCrypt - Image Pixel Encryption Tool</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <span class="logo-icon">🔐</span>
+                <span>PixelCrypt</span>
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#installation">Install</a>
+                <a href="app.html" class="btn-nav">Try Online</a>
+                <a href="https://github.com/RiveraMaxwell/pixelcrypt" class="btn-nav btn-github" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Encrypt Images with<br><span class="gradient-text">Pixel-Level Precision</span></h1>
+            <p class="hero-subtitle">
+                A lightweight tool that scrambles image pixels using XOR encryption.
+                Simple, symmetric, and visual. Available as a Python desktop app or directly in your browser.
+            </p>
+            <div class="hero-buttons">
+                <a href="app.html" class="btn btn-primary">Try It Online →</a>
+                <a href="#installation" class="btn btn-secondary">Download Desktop App</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="demo-card">
+                <div class="demo-header">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                </div>
+                <div class="demo-content">
+                    <div class="demo-step">
+                        <div class="demo-img original">🖼️</div>
+                        <span>Original</span>
+                    </div>
+                    <div class="demo-arrow">→</div>
+                    <div class="demo-step">
+                        <div class="demo-img key">🔑</div>
+                        <span>+ Key</span>
+                    </div>
+                    <div class="demo-arrow">→</div>
+                    <div class="demo-step">
+                        <div class="demo-img encrypted">🔒</div>
+                        <span>Encrypted</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="features">
+        <h2>Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Fast XOR Encryption</h3>
+                <p>NumPy-powered pixel operations process images instantly using bitwise XOR with a key-derived keystream.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Symmetric</h3>
+                <p>Same key encrypts and decrypts. XOR is its own inverse — no separate decrypt algorithm needed.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🖼️</div>
+                <h3>Multi-Format</h3>
+                <p>Supports PNG, JPEG, BMP, and TIFF input. Always outputs lossless PNG for perfect decryption.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Key Strength Meter</h3>
+                <p>Real-time feedback on your key quality — length, character variety, and pattern detection.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👁️</div>
+                <h3>Realtime Preview</h3>
+                <p>Watch the encryption process unfold chunk by chunk with the realtime preview mode.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📁</div>
+                <h3>Batch Processing</h3>
+                <p>Encrypt or decrypt entire folders of images at once with the same key.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>Browser Version</h3>
+                <p>No installation needed. The web version runs entirely client-side — your images never leave your device.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✓</div>
+                <h3>Verification</h3>
+                <p>Built-in round-trip verification confirms decryption matches the original image exactly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Key → Seed</h3>
+                    <p>Your text key is hashed with SHA-256 and converted to a deterministic 32-bit seed.</p>
+                    <code>seed = SHA256(key) mod 2³²</code>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Seed → Keystream</h3>
+                    <p>A pseudorandom number generator produces a keystream matching the image dimensions (H × W × 3 bytes).</p>
+                    <code>keystream = PRNG(seed) → [0-255] for each pixel channel</code>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>XOR</h3>
+                    <p>Each pixel's RGB values are XOR'd with the corresponding keystream values, scrambling the image.</p>
+                    <code>encrypted_pixel = original_pixel ⊕ keystream_pixel</code>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Decrypt</h3>
+                    <p>Apply the same key again. XOR is self-inverse, so the original image is restored.</p>
+                    <code>original = encrypted ⊕ keystream = (original ⊕ keystream) ⊕ keystream</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation -->
+    <section id="installation" class="installation">
+        <h2>Installation</h2>
+        <div class="install-options">
+            <div class="install-card">
+                <h3>🌐 Browser (No Install)</h3>
+                <p>Use the web version directly — works on any device with a modern browser.</p>
+                <a href="app.html" class="btn btn-primary">Open Web App</a>
+            </div>
+            <div class="install-card">
+                <h3>🐍 Python Desktop</h3>
+                <p>Clone and run locally for the full-featured desktop experience.</p>
+                <div class="code-block">
+                    <pre><code>git clone https://github.com/RiveraMaxwell/pixelcrypt.git
+cd pixelcrypt
+pip install -r requirements.txt
+python src/app.py</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>⚠️ This is an educational/demonstration tool. Not suitable for protecting sensitive data against determined attackers.</p>
+            <p class="footer-links">
+                <a href="https://github.com/RiveraMaxwell/pixelcrypt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <span>·</span>
+                <a href="app.html">Web App</a>
+                <span>·</span>
+                <span>MIT License</span>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile nav toggle
+        document.querySelector('.nav-toggle').addEventListener('click', () => {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
