@@ -15,6 +15,11 @@ if not exist ".git" (
     git branch -M main
 )
 
+:: Pull latest changes first to avoid conflicts
+echo Pulling latest from remote...
+git pull origin main --allow-unrelated-histories 2>nul
+echo.
+
 :: Stage all changes
 git add .
 
