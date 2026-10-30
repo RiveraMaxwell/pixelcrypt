@@ -10,18 +10,18 @@
     <link rel="stylesheet" href="app.css">
 </head>
 <body>
-    <!-- Header -->
+    
     <header class="app-header">
         <a href="index.html" class="back-link">← Back to Home</a>
         <h1>🔐 PixelCrypt <span class="badge">Web</span></h1>
         <p class="privacy-note">🛡️ Everything runs locally — your images never leave your device.</p>
     </header>
 
-    <!-- Main App -->
+    
     <main class="app-container">
-        <!-- Controls Panel -->
+        
         <div class="controls-panel">
-            <!-- File Input -->
+            
             <div class="control-group">
                 <label>Image</label>
                 <div class="drop-zone" id="dropZone">
@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <!-- Key Input -->
+            
             <div class="control-group">
                 <label>Encryption Key</label>
                 <div class="key-input-wrap">
@@ -44,23 +44,23 @@
                 <span class="strength-label" id="strengthLabel"></span>
             </div>
 
-            <!-- Actions -->
+            
             <div class="control-group actions">
                 <button class="btn btn-encrypt" id="encryptBtn" disabled>🔒 Encrypt</button>
                 <button class="btn btn-decrypt" id="decryptBtn" disabled>🔓 Decrypt</button>
             </div>
 
-            <!-- Download -->
+            
             <div class="control-group" id="downloadGroup" style="display:none;">
                 <button class="btn btn-download" id="downloadBtn">💾 Download Result</button>
                 <button class="btn btn-verify" id="verifyBtn">✓ Verify Round-Trip</button>
             </div>
 
-            <!-- Status -->
+            
             <div class="status" id="status"></div>
         </div>
 
-        <!-- Preview Panel -->
+        
         <div class="preview-panel">
             <div class="preview-tabs">
                 <button class="tab active" data-view="result">Result</button>

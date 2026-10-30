@@ -28,7 +28,7 @@ def evaluate_key_strength(key: str) -> tuple[int, str]:
     score = 0
     length = len(key)
 
-    # Length scoring
+                    
     if length >= 16:
         score += 40
     elif length >= 12:
@@ -38,7 +38,7 @@ def evaluate_key_strength(key: str) -> tuple[int, str]:
     elif length >= 4:
         score += 10
 
-    # Character variety
+                       
     has_lower = any(c.islower() for c in key)
     has_upper = any(c.isupper() for c in key)
     has_digit = any(c.isdigit() for c in key)
@@ -47,7 +47,7 @@ def evaluate_key_strength(key: str) -> tuple[int, str]:
     variety = sum([has_lower, has_upper, has_digit, has_special])
     score += variety * 15
 
-    # Penalize repetitive patterns
+                                  
     unique_chars = len(set(key))
     if unique_chars < length * 0.5:
         score -= 15

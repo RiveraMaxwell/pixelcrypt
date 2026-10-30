@@ -15,7 +15,7 @@ from encryption import (
     compute_image_hash,
 )
 
-# Try to enable drag & drop
+                           
 try:
     from tkinterdnd2 import DND_FILES, TkinterDnD
     DND_AVAILABLE = True
@@ -32,17 +32,17 @@ class App:
         self.root.geometry("750x650")
         self.root.minsize(600, 500)
 
-        # State
+               
         self.input_path = tk.StringVar()
         self.key = tk.StringVar()
         self.show_key = False
         self.realtime = tk.BooleanVar()
         self.original_img = None
         self.result_img = None
-        self.view_mode = tk.StringVar(value="result")  # "original", "result", "side_by_side"
+        self.view_mode = tk.StringVar(value="result")                                        
         self.last_output_path = None
 
-        # Apply dark theme colors
+                                 
         self.bg = "#1e1e2e"
         self.fg = "#cdd6f4"
         self.accent = "#89b4fa"
@@ -53,7 +53,7 @@ class App:
 
         self.root.configure(bg=self.bg)
 
-        # Configure ttk style
+                             
         self.style = ttk.Style()
         self.style.theme_use("clam")
         self.style.configure("TFrame", background=self.bg)
@@ -73,7 +73,7 @@ class App:
         self._build_ui()
 
     def _build_ui(self):
-        # --- File Selection ---
+                                
         file_frame = ttk.Frame(self.root)
         file_frame.pack(fill="x", padx=10, pady=(10, 5))
 
@@ -85,7 +85,7 @@ class App:
         self.info_label = ttk.Label(file_frame, text="", foreground="#6c7086")
         self.info_label.pack(side="right")
 
-        # --- Key Entry ---
+                           
         key_frame = ttk.Frame(self.root)
         key_frame.pack(fill="x", padx=10, pady=5)
 
@@ -107,7 +107,7 @@ class App:
         self.toggle_btn = ttk.Button(key_frame, text="👁", width=3, command=self.toggle_key)
         self.toggle_btn.pack(side="left")
 
-        # Key strength indicator
+                                
         self.strength_label = ttk.Label(key_frame, text="", width=12)
         self.strength_label.pack(side="left", padx=10)
 
@@ -116,7 +116,7 @@ class App:
         )
         self.strength_bar.pack(side="left")
 
-        # --- Options ---
+                         
         options_frame = ttk.Frame(self.root)
         options_frame.pack(fill="x", padx=10, pady=5)
 
@@ -124,7 +124,7 @@ class App:
             options_frame, text="Realtime Preview", variable=self.realtime
         ).pack(side="left")
 
-        # View mode
+                   
         ttk.Label(options_frame, text="  View:").pack(side="left", padx=(20, 5))
         views = [("Result", "result"), ("Original", "original"), ("Side by Side", "side_by_side")]
         for text, value in views:
@@ -133,7 +133,7 @@ class App:
                 command=self._refresh_preview
             ).pack(side="left", padx=2)
 
-        # --- Action Buttons ---
+                                
         action_frame = ttk.Frame(self.root)
         action_frame.pack(fill="x", padx=10, pady=5)
 
@@ -156,13 +156,13 @@ class App:
         )
         self.copy_btn.pack(side="left", padx=5)
 
-        # --- Progress ---
+                          
         self.progress = ttk.Progressbar(
             self.root, orient="horizontal", mode="determinate", style="Horizontal.TProgressbar"
         )
         self.progress.pack(fill="x", padx=10, pady=5)
 
-        # --- Preview Canvas ---
+                                
         self.canvas = tk.Label(
             self.root,
             text="Drag & Drop image here\nor use Browse",
@@ -173,7 +173,7 @@ class App:
         )
         self.canvas.pack(fill="both", expand=True, padx=10, pady=(5, 10))
 
-        # Enable drag & drop
+                            
         if DND_AVAILABLE:
             self.root.drop_target_register(DND_FILES)
             self.root.dnd_bind("<<Drop>>", self.on_drop)
@@ -237,7 +237,7 @@ class App:
         self.original_img = Image.open(path).convert("RGB")
         self.result_img = None
 
-        # Update file info
+                          
         filename = os.path.basename(path)
         self.file_label.config(text=filename, foreground=self.fg)
 
@@ -278,7 +278,7 @@ class App:
         right = self.result_img.copy()
         right.thumbnail((half_w, max_h))
 
-        # Create combined image
+                               
         combined_w = left.width + right.width + 10
         combined_h = max(left.height, right.height)
         combined = Image.new("RGB", (combined_w, combined_h), color=(49, 50, 68))
@@ -310,7 +310,7 @@ class App:
     def build_output_path(self, input_path, mode):
         directory, filename = os.path.split(input_path)
         name, ext = os.path.splitext(filename)
-        # Always save as PNG for lossless output
+                                                
         return os.path.join(directory, f"{name}_{mode}.png")
 
     def _set_buttons_state(self, state):
@@ -387,7 +387,7 @@ class App:
         if not paths:
             return
 
-        # Ask encrypt or decrypt
+                                
         mode = messagebox.askquestion(
             "Batch Mode", "Click 'Yes' to Encrypt or 'No' to Decrypt"
         )
@@ -436,7 +436,7 @@ class App:
 
         original_hash = compute_image_hash(self.original_img)
 
-        # Re-process the result to see if we get back the original
+                                                                  
         verification = process_image(img=self.result_img, key=self.key.get())
         verify_hash = compute_image_hash(verification)
 

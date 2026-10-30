@@ -1,4 +1,4 @@
-/* === App Base === */
+
 *, *::before, *::after {
     margin: 0;
     padding: 0;
@@ -29,7 +29,7 @@ body {
     min-height: 100vh;
 }
 
-/* === Header === */
+
 .app-header {
     text-align: center;
     padding: 1.5rem 2rem;
@@ -72,7 +72,7 @@ body {
     margin-top: 0.25rem;
 }
 
-/* === App Layout === */
+
 .app-container {
     display: grid;
     grid-template-columns: 320px 1fr;
@@ -80,7 +80,7 @@ body {
     height: calc(100vh - 90px);
 }
 
-/* === Controls Panel === */
+
 .controls-panel {
     padding: 1.5rem;
     border-right: 1px solid var(--border);
@@ -104,7 +104,7 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* Drop Zone */
+
 .drop-zone {
     border: 2px dashed var(--border);
     border-radius: var(--radius);
@@ -143,7 +143,7 @@ body {
     font-family: 'JetBrains Mono', monospace;
 }
 
-/* Key Input */
+
 .key-input-wrap {
     display: flex;
     gap: 0.5rem;
@@ -180,7 +180,7 @@ body {
     border-color: var(--accent);
 }
 
-/* Strength Bar */
+
 .strength-bar-wrap {
     height: 4px;
     background: var(--bg-surface);
@@ -200,7 +200,7 @@ body {
     color: var(--text-muted);
 }
 
-/* Buttons */
+
 .actions {
     flex-direction: row;
     gap: 0.75rem;
@@ -266,7 +266,7 @@ body {
     border-color: var(--green);
 }
 
-/* Status */
+
 .status {
     font-size: 0.85rem;
     padding: 0.5rem;
@@ -296,7 +296,7 @@ body {
     border: 1px solid rgba(124, 58, 237, 0.2);
 }
 
-/* === Preview Panel === */
+
 .preview-panel {
     display: flex;
     flex-direction: column;
@@ -363,7 +363,7 @@ body {
     max-width: 48%;
 }
 
-/* === Responsive === */
+
 @media (max-width: 768px) {
     .app-container {
         grid-template-columns: 1fr;

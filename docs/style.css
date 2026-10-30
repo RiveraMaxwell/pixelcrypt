@@ -1,4 +1,4 @@
-/* === Reset & Base === */
+
 *, *::before, *::after {
     margin: 0;
     padding: 0;
@@ -56,7 +56,7 @@ code {
     color: var(--accent-light);
 }
 
-/* === Navigation === */
+
 .navbar {
     position: fixed;
     top: 0;
@@ -135,7 +135,7 @@ code {
     cursor: pointer;
 }
 
-/* === Hero === */
+
 .hero {
     min-height: 100vh;
     display: flex;
@@ -211,7 +211,7 @@ code {
     background: var(--bg-surface);
 }
 
-/* Hero visual */
+
 .hero-visual {
     flex: 1;
     display: flex;
@@ -281,7 +281,7 @@ code {
     font-size: 1.2rem;
 }
 
-/* === Features === */
+
 .features {
     padding: 6rem 2rem;
     max-width: 1200px;
@@ -329,7 +329,7 @@ code {
     line-height: 1.6;
 }
 
-/* === How It Works === */
+
 .how-it-works {
     padding: 6rem 2rem;
     max-width: 800px;
@@ -384,7 +384,7 @@ code {
     margin-top: 0.25rem;
 }
 
-/* === Installation === */
+
 .installation {
     padding: 6rem 2rem;
     max-width: 1000px;
@@ -442,7 +442,7 @@ code {
     white-space: pre;
 }
 
-/* === Footer === */
+
 .footer {
     border-top: 1px solid var(--border);
     padding: 3rem 2rem;
@@ -466,7 +466,7 @@ code {
     color: var(--border);
 }
 
-/* === Responsive === */
+
 @media (max-width: 768px) {
     .nav-links {
         display: none;

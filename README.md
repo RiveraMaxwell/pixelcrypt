@@ -1,124 +1,62 @@
-# PixelCrypt - Image Pixel Encryption Tool
+# PixelCrypt
 
-A Python GUI application that encrypts and decrypts images using XOR-based pixel manipulation with a user-provided key.
+PixelCrypt is an educational image-scrambling tool with a Python desktop app and a browser app. Both use
+key-derived XOR streams, but their pseudorandom generators are different, so files encrypted by one version
+are not interchangeable with the other.
 
-![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
+This is not modern cryptography and should not be used to protect sensitive images.
 
-## Features
+## Browser app
 
-- **XOR Pixel Encryption** — Symmetric encryption using a key-derived pseudorandom keystream
-- **Multiple Format Support** — PNG, JPEG, BMP, TIFF input (always outputs lossless PNG)
-- **Key Strength Indicator** — Real-time visual feedback on key quality
-- **Realtime Preview** — Watch the encryption/decryption process chunk by chunk
-- **Side-by-Side Comparison** — View original and processed images together
-- **Batch Processing** — Encrypt/decrypt multiple files at once
-- **Drag & Drop** — Drop images directly into the application window
-- **Round-Trip Verification** — Verify that decryption produces the original image
-- **Dark Theme** — Modern dark UI
-- **Copy Output Path** — Quick clipboard copy of saved file location
+Open `docs/index.html` through GitHub Pages or a local static server. The browser version processes images
+locally and does not upload them. It supports PNG, JPEG, BMP, and TIFF input, always downloads PNG output,
+and can encrypt, decrypt, preview, verify, and download an image.
 
-## How It Works
-
-1. Your text key is hashed with SHA-256 and converted to a 32-bit seed
-2. A NumPy random generator produces a keystream matching the image dimensions
-3. Each pixel is XOR'd with the corresponding keystream value
-4. Since XOR is its own inverse, using the same key on an encrypted image restores the original
-
-> ⚠️ This is a demonstration/educational tool. The encryption is not suitable for protecting sensitive data against determined attackers.
-
-## Installation
-
-### Prerequisites
-
-- Python 3.8 or higher
-
-### Setup
+For a quick local server:
 
 ```bash
-# Clone the repository
-git clone https://github.com/RiveraMaxwell/pixelcrypt.git
-cd pixelcrypt
-
-# Install dependencies
-pip install -r requirements.txt
+python -m http.server 8000 --directory docs
 ```
 
-### Optional: Drag & Drop Support
+Then open <http://localhost:8000/>.
 
-Drag & drop requires `tkinterdnd2`. It's included in requirements.txt but the app works without it.
+## Python desktop app
 
-## Usage
+Requires Python 3.8 or newer.
 
 ```bash
-# Run the application
+pip install -r requirements.txt
 python src/app.py
 ```
 
-### Quick Start
+The desktop app supports image selection, optional drag and drop, realtime preview, batch processing, round-trip
+verification, and copying the saved output path. Input formats are PNG, JPEG, BMP, and TIFF; output is always
+saved as PNG so lossy JPEG compression does not break round trips.
 
-1. Click **Browse Image** or drag & drop an image file
-2. Enter an encryption key
-3. Click **🔒 Encrypt** to encrypt or **🔓 Decrypt** to decrypt
-4. The output is saved alongside the original with `_encrypt` or `_decrypt` suffix
+## How it works
 
-### Batch Processing
+1. The key is hashed with SHA-256 and reduced to a 32-bit seed.
+2. A deterministic pseudorandom generator creates one byte per RGB channel.
+3. Each RGB channel is XORed with the corresponding stream byte.
+4. Applying the same operation again restores the original because XOR is self-inverse.
 
-1. Enter your key
-2. Click **📁 Batch Process**
-3. Select multiple image files
-4. Choose encrypt or decrypt
-5. All files are processed with the same key
+The browser uses a small xoshiro-based generator. The desktop app uses NumPy's PCG64 generator, so each version
+can decrypt its own output but not the other's.
 
-### Verification
+## Project layout
 
-After encrypting, click **✓ Verify** to confirm that decrypting the output with the same key reproduces the original image.
+- `docs/index.html`, `docs/style.css` — landing page.
+- `docs/app.html`, `docs/app.css`, `docs/app.js` — browser application.
+- `src/app.py` — Tkinter desktop interface.
+- `src/encryption.py` — desktop image processing and key-strength logic.
+- `requirements.txt` — Python dependencies.
 
-## Live Demo
+## Limitations
 
-👉 **[Try it online](https://riveramaxwell.github.io/pixelcrypt/app.html)** — no installation needed, runs entirely in your browser.
-
-## Project Structure
-
-```
-pixelcrypt/
-├── docs/                  # GitHub Pages website
-│   ├── index.html         # Landing page
-│   ├── style.css          # Landing page styles
-│   ├── app.html           # Web encryption tool
-│   ├── app.css            # Web app styles
-│   └── app.js             # Client-side encryption engine
-├── src/
-│   ├── __init__.py
-│   ├── app.py             # Python GUI application
-│   └── encryption.py      # Python encryption engine
-├── requirements.txt
-├── LICENSE
-├── .gitignore
-└── README.md
-```
-
-## Important Notes
-
-- **Always use PNG for encrypted output** — JPEG compression is lossy and will corrupt encrypted data, making decryption impossible. The tool automatically saves as PNG.
-- **Remember your key** — There is no key recovery. If you lose the key, the image cannot be decrypted.
-- **Same key for encrypt and decrypt** — XOR encryption is symmetric.
-
-## Technical Details
-
-| Component | Technology |
-|-----------|-----------|
-| GUI | Tkinter + ttk |
-| Image Processing | Pillow (PIL) |
-| Pixel Operations | NumPy |
-| Key Derivation | SHA-256 → 32-bit seed |
-| RNG | numpy.random.default_rng (PCG64) |
-| Cipher | XOR stream cipher |
-
-## Contributing
-
-Contributions are welcome! Feel free to open issues or submit pull requests.
+- XOR with a deterministic keystream is for demonstration, not secure encryption.
+- Losing the key makes an image unrecoverable.
+- The browser and desktop apps use different pseudorandom generators and cannot exchange encrypted files.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT. See [LICENSE](LICENSE).

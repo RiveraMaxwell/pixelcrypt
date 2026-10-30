@@ -1,13 +1,9 @@
-/**
- * PixelCrypt Web - Client-side image XOR encryption
- * Replicates the Python version's logic using the same SHA-256 → seed → PRNG → XOR pipeline.
- * Uses a seeded xoshiro128** PRNG for deterministic keystream generation.
- */
+
 
 (function () {
     "use strict";
 
-    // === DOM Elements ===
+
     const fileInput = document.getElementById("fileInput");
     const browseBtn = document.getElementById("browseBtn");
     const dropZone = document.getElementById("dropZone");
@@ -27,15 +23,15 @@
     const status = document.getElementById("status");
     const tabs = document.querySelectorAll(".tab");
 
-    // === State ===
+
     let originalImageData = null;
     let resultImageData = null;
     let currentView = "result";
 
-    // === Seeded PRNG (xoshiro128**) ===
-    // We need a deterministic PRNG seeded from the key to match Python's numpy.random behavior concept.
-    // Note: This won't produce identical output to NumPy's PCG64, but uses the same principle.
-    // For cross-compatibility with the Python version, both use the same seed derivation.
+
+
+
+
 
     function splitmix32(seed) {
         return function () {
@@ -74,14 +70,14 @@
         return xoshiro128ss(a, b, c, d);
     }
 
-    // === SHA-256 Key to Seed ===
+
     async function keyToSeed(key) {
         const encoder = new TextEncoder();
         const data = encoder.encode(key);
         const hashBuffer = await crypto.subtle.digest("SHA-256", data);
         const hashArray = new Uint8Array(hashBuffer);
 
-        // Convert first 4 bytes to a 32-bit integer (same concept as Python's mod 2^32)
+
         let seed = 0;
         for (let i = 0; i < 4; i++) {
             seed = (seed << 8) | hashArray[i];
@@ -89,17 +85,17 @@
         return seed >>> 0;
     }
 
-    // === Image Processing ===
+
     function processImageData(imageData, rng) {
-        const data = imageData.data; // RGBA Uint8ClampedArray
+        const data = imageData.data;
         const result = new Uint8ClampedArray(data.length);
 
         for (let i = 0; i < data.length; i += 4) {
-            // XOR RGB channels with random values
-            result[i] = data[i] ^ Math.floor(rng() * 256);       // R
-            result[i + 1] = data[i + 1] ^ Math.floor(rng() * 256); // G
-            result[i + 2] = data[i + 2] ^ Math.floor(rng() * 256); // B
-            result[i + 3] = data[i + 3]; // Alpha unchanged
+
+            result[i] = data[i] ^ Math.floor(rng() * 256);
+            result[i + 1] = data[i + 1] ^ Math.floor(rng() * 256);
+            result[i + 2] = data[i + 2] ^ Math.floor(rng() * 256);
+            result[i + 3] = data[i + 3];
         }
 
         return new ImageData(result, imageData.width, imageData.height);
@@ -111,7 +107,7 @@
         return processImageData(sourceImageData, rng);
     }
 
-    // === Key Strength ===
+
     function evaluateKeyStrength(key) {
         if (!key) return { score: 0, label: "", color: "" };
 
@@ -146,7 +142,7 @@
         return { score, label, color };
     }
 
-    // === UI Helpers ===
+
     function showStatus(message, type) {
         status.textContent = message;
         status.className = "status " + type;
@@ -171,7 +167,7 @@
         ctx.drawImage(img, 0, 0);
         originalImageData = ctx.getImageData(0, 0, img.naturalWidth, img.naturalHeight);
 
-        // Reset result
+
         resultImageData = null;
         canvasResult.hidden = true;
         downloadGroup.style.display = "none";
@@ -193,7 +189,7 @@
         } else if (currentView === "result" && resultImageData) {
             canvasResult.hidden = false;
         } else if (currentView === "result" && originalImageData) {
-            // Show original as placeholder if no result yet
+
             canvasOriginal.hidden = false;
         } else if (currentView === "side-by-side" && originalImageData) {
             previewArea.classList.add("side-by-side");
@@ -202,7 +198,7 @@
         }
     }
 
-    // === File Loading ===
+
     function handleFile(file) {
         if (!file || !file.type.startsWith("image/")) {
             showStatus("Please select a valid image file.", "error");
@@ -223,16 +219,16 @@
         reader.readAsDataURL(file);
     }
 
-    // === Event Listeners ===
 
-    // File input
+
+
     browseBtn.addEventListener("click", () => fileInput.click());
     dropZone.addEventListener("click", () => fileInput.click());
     fileInput.addEventListener("change", (e) => {
         if (e.target.files[0]) handleFile(e.target.files[0]);
     });
 
-    // Drag & drop
+
     dropZone.addEventListener("dragover", (e) => {
         e.preventDefault();
         dropZone.classList.add("dragover");
@@ -246,7 +242,7 @@
         if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
     });
 
-    // Key input
+
     keyInput.addEventListener("input", () => {
         const { score, label, color } = evaluateKeyStrength(keyInput.value);
         strengthBar.style.width = score + "%";
@@ -256,13 +252,13 @@
         updateButtons();
     });
 
-    // Toggle key visibility
+
     toggleKey.addEventListener("click", () => {
         const isPassword = keyInput.type === "password";
         keyInput.type = isPassword ? "text" : "password";
     });
 
-    // Tabs
+
     tabs.forEach((tab) => {
         tab.addEventListener("click", () => {
             tabs.forEach((t) => t.classList.remove("active"));
@@ -272,7 +268,7 @@
         });
     });
 
-    // Encrypt / Decrypt (same operation — XOR is symmetric)
+
     async function runProcess(mode) {
         if (!originalImageData || !keyInput.value) return;
 
@@ -280,19 +276,19 @@
         encryptBtn.disabled = true;
         decryptBtn.disabled = true;
 
-        // Use setTimeout to allow UI to update
+
         setTimeout(async () => {
             try {
                 const sourceData = originalImageData;
                 resultImageData = await processImage(sourceData, keyInput.value);
 
-                // Draw result to canvas
+
                 canvasResult.width = resultImageData.width;
                 canvasResult.height = resultImageData.height;
                 const ctx = canvasResult.getContext("2d");
                 ctx.putImageData(resultImageData, 0, 0);
 
-                // Update UI
+
                 currentView = "result";
                 tabs.forEach((t) => t.classList.remove("active"));
                 tabs[0].classList.add("active");
@@ -313,7 +309,7 @@
     encryptBtn.addEventListener("click", () => runProcess("encrypt"));
     decryptBtn.addEventListener("click", () => runProcess("decrypt"));
 
-    // Download
+
     downloadBtn.addEventListener("click", () => {
         if (!resultImageData) return;
         canvasResult.toBlob((blob) => {
@@ -326,7 +322,7 @@
         }, "image/png");
     });
 
-    // Verify round-trip
+
     verifyBtn.addEventListener("click", async () => {
         if (!resultImageData || !keyInput.value) return;
 
@@ -336,7 +332,7 @@
             try {
                 const roundTrip = await processImage(resultImageData, keyInput.value);
 
-                // Compare with original
+
                 const orig = originalImageData.data;
                 const rt = roundTrip.data;
                 let match = true;
